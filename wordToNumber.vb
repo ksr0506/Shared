@@ -1,8 +1,8 @@
 '################################################################
 '[Argument]
 'Name : in_sWord / Direction : In / Type : String / 변환할 문자열
-'Name : out_lNumber / Direction : In / Type : System.Int64 / 변환된 숫자
-'Name : out_bResult / Direction : In / Type : Boolean / 변환 결과 (성공 : True, 실패 : False)
+'Name : out_lNumber / Direction : Out / Type : System.Int64 / 변환된 숫자
+'Name : out_bResult / Direction : Out / Type : Boolean / 변환 결과 (성공 : True, 실패 : False)
 '################################################################
 
 Dim regex As System.Text.RegularExpressions.Regex
