@@ -28,7 +28,6 @@ lTemp = 0
 lTotal = 0L
 		
 Try
-	
 	For Each  wordItem In regex.Matches(in_sWord,"([A-Z])\w+").Cast(Of Match).Select(Function(x As Match) x.Value.ToLowerInvariant)
 		If dicWordTable.ContainsKey(wordItem.ToString) Then
 			listNumber.Add(dicWordTable(wordItem.ToString)) 'Dictionary에 Key값이 포함되어 있으면, List에 wordItem 추가
@@ -46,12 +45,13 @@ Try
 			  lTemp += lNumber
 		End If		
 	Next
+		
 	'console.WriteLine(String.Format("Input Word : {0}",in_sWord))
 	'console.WriteLine(String.Format("Total : {0}",lTotal))
 	'console.WriteLine(String.Format("Temp : {0}",lTemp))
 	out_lNumber = (lTotal + lTemp) * If(in_sWord.StartsWith("minus", StringComparison.InvariantCultureIgnoreCase),-1,1) '음수 계산,  위에 예외처리 때문에 의미없음
 	out_bResult = If(out_lNumber <> 0,True,False)
-	'console.WriteLine(String.Format("Result Number : {0}",out_lNumber))
+	'console.WriteLine(String.Format("Result Number : {0}",out_lNumber))			
 Catch
 	out_bResult = False
 End Try
