@@ -9,7 +9,13 @@
 
 3.activityId          : 해당 Activity Id로 검색하게 되면 오류가 발생한 Activity가 검색 가능(Workflow 별로 번호가 각각 생성되어, 오류가 발생한 Workflow 기준에서 검색해야함.)
 > String.Join("0", objFaultedDetails.GetType().GetProperty("ActivityId").GetValue(objFaultedDetails,Nothing).ToString.Split("."c).[Select](Function(s) Integer.Parse(s).ToString("X2")))
+# 작업 순서
+(1) FaultedDetails.GetType().GetProperty("ActivityId").GetValue(FaultedDetails,Nothing).ToString = "1.15"
+(2) ~).ToString.Split("."c)
+(3) ~ Integer.Parse(s).ToString("X2") (https://learn.microsoft.com/ko-kr/dotnet/standard/base-types/standard-numeric-format-strings#hexadecimal-format-specifier-x)
+(4) String.Join("0", ~
 
+# 관련 풀이 : "1.15" -> ("1")("15") -> ("01")("0F") -> "01"+"0"+"0F" -> "0100F"
 4.activityDisplayName : 에러가 발생한 Activity의 DisplayName
 > objFaultedDetails.GetType().GetProperty("DisplayName").GetValue(objFaultedDetails,Nothing).ToString
 
