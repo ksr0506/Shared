@@ -32,7 +32,8 @@
 ]
 
 # 2023.06.22 추가내용
-Try 부분의 Activity가 Invoke Workflow가 아닌경우, Exception.Source에서 정상적으로 DisplayName을 표기 못하듯이, Object 객체에 올바른 데이터가 입력되어 있지 않을 수 있으므로, 예외처리 추가로 필요.
+Try 부분의 Activity가 Invoke Workflow가 아닌경우, Exception.Source에서 정상적으로 DisplayName을 표기 못하듯이, Object 객체에 올바른 데이터가 반환되어 있지 않을 수 있으므로, 예외처리 추가로 필요함.
+예시의 Log Message를 그대로 입력할 경우 Error 발생
 
 */
 
