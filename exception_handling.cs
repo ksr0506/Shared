@@ -44,7 +44,7 @@ Try 부분의 Activity가 Invoke Workflow가 아닌경우, Exception.Source에�
 obj_FaultedDetails(of Object) = exception.Data.item("FaultedDetails")
 
 //Log Message
-If(IsNothing(obj_FaultedDetails),
+If(obj_FaultedDetails Is Nothing,
 String.Format("exception Source : {0} / exception Message : {1}", systemException.Source, systemException.Message),
 String.Format("[1.processName : {0}]{5}[2.workflowFileName : {1}]{5}[3.activityId : {2}]{5}[4.activityDisplayName : {3}]{5}[5.errorMsg : {4}]",
 Newtonsoft.Json.Linq.JObject.Parse(File.ReadAllText("project.json"))("name"),
