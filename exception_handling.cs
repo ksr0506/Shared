@@ -5,19 +5,19 @@
 > Newtonsoft.Json.Linq.JObject.Parse(File.ReadAllText("project.json"))("name")
 
 2.workflowFileName    : 에러가 발생한 Workflow파일의 이름
-> objFaultedDetails.GetType().GetProperty("WorkflowFile").GetValue(objFaultedDetails,Nothing).ToString
+> obj_FaultedDetails.GetType().GetProperty("WorkflowFile").GetValue(obj_FaultedDetails,Nothing).ToString
 
 3.activityId          : 해당 Activity Id로 검색하게 되면 오류가 발생한 Activity가 검색 가능(Workflow 별로 번호가 각각 생성되어, 오류가 발생한 Workflow 기준에서 검색해야함.)
-> String.Join("0", objFaultedDetails.GetType().GetProperty("ActivityId").GetValue(objFaultedDetails,Nothing).ToString.Split("."c).[Select](Function(s) Integer.Parse(s).ToString("X2")))
+> String.Join("0", obj_FaultedDetails.GetType().GetProperty("ActivityId").GetValue(obj_FaultedDetails,Nothing).ToString.Split("."c).[Select](Function(s) Integer.Parse(s).ToString("X2")))
 # 작업 순서
-(1) FaultedDetails.GetType().GetProperty("ActivityId").GetValue(FaultedDetails,Nothing).ToString = "1.15"
-(2) ~).ToString.Split("."c)
-(3) ~ Integer.Parse(s).ToString("X2") (https://learn.microsoft.com/ko-kr/dotnet/standard/base-types/standard-numeric-format-strings#hexadecimal-format-specifier-x)
-(4) String.Join("0", ~
-
+  (1) obj_FaultedDetails.GetType().GetProperty("ActivityId").GetValue(obj_FaultedDetails,Nothing).ToString = "1.15"
+  (2) ~).ToString.Split("."c)
+  (3) ~ Integer.Parse(s).ToString("X2") (https://learn.microsoft.com/ko-kr/dotnet/standard/base-types/standard-numeric-format-strings#hexadecimal-format-specifier-x)
+  (4) String.Join("0", ~
 # 관련 풀이 : "1.15" -> ("1")("15") -> ("01")("0F") -> "01"+"0"+"0F" -> "0100F"
+
 4.activityDisplayName : 에러가 발생한 Activity의 DisplayName
-> objFaultedDetails.GetType().GetProperty("DisplayName").GetValue(objFaultedDetails,Nothing).ToString
+> obj_FaultedDetails.GetType().GetProperty("DisplayName").GetValue(obj_FaultedDetails,Nothing).ToString
 
 5.errorMsg            : 에러 메시지
 > exception.Message
@@ -35,17 +35,21 @@
 Try 부분의 Activity가 Invoke Workflow가 아닌경우, Exception.Source에서 정상적으로 DisplayName을 표기 못하듯이, Object 객체에 올바른 데이터가 반환되어 있지 않을 수 있으므로, 예외처리 추가로 필요함.
 예시의 Log Message를 그대로 입력할 경우 Error 발생
 
+# 2023.12.09 추가내용
+==> Log Message 예외처리 반영하여 개선
+
 */
 
-
 //Assign
-objFaultedDetails(of Object) = exception.Data.item("FaultedDetails")
+obj_FaultedDetails(of Object) = exception.Data.item("FaultedDetails")
 
 //Log Message
+If(IsNothing(obj_FaultedDetails),
+String.Format("exception Source : {0} / exception Message : {1}", systemException.Source, systemException.Message),
 String.Format("[1.processName : {0}]{5}[2.workflowFileName : {1}]{5}[3.activityId : {2}]{5}[4.activityDisplayName : {3}]{5}[5.errorMsg : {4}]",
 Newtonsoft.Json.Linq.JObject.Parse(File.ReadAllText("project.json"))("name"),
-objFaultedDetails.GetType().GetProperty("WorkflowFile").GetValue(objFaultedDetails,Nothing).ToString,
-String.Join("0", objFaultedDetails.GetType().GetProperty("ActivityId").GetValue(objFaultedDetails,Nothing).ToString.Split("."c).[Select](Function(s) Integer.Parse(s).ToString("X2"))),
-objFaultedDetails.GetType().GetProperty("DisplayName").GetValue(objFaultedDetails,Nothing).ToString,
-exception.Message,
-Environment.NewLine)
+obj_FaultedDetails.GetType().GetProperty("WorkflowFile").GetValue(obj_FaultedDetails,Nothing).ToString,
+String.Join("0", obj_FaultedDetails.GetType().GetProperty("ActivityId").GetValue(obj_FaultedDetails,Nothing).ToString.Split("."c).[Select](Function(s) Integer.Parse(s).ToString("X2"))),
+obj_FaultedDetails.GetType().GetProperty("DisplayName").GetValue(obj_FaultedDetails,Nothing).ToString,
+systemException.Message,
+Environment.NewLine))
