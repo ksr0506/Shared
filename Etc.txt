@@ -1,0 +1,134 @@
+# List Date자료형 최소 값 호출
+
+$ListVariable$.Min(Function(x) x.Date)).ToString
+
+
+
+# Dictionary 최소 값 출력
+
+$DictionaryVariable$.Min(Function(x) x.Value)
+
+$DictionaryVariable$.Min(Function(x) x.Key)
+
+
+
+# Dictionary Key 기준으로 OrderBy 정렬 후 Dictionary 변수 선언
+
+Assign $NewDictionaryVariable$ = $OldDictionaryVariable$.OrderBy(Function(x) x.Key).ToDictionary(Function(x) x.key, Function(x) x.value)
+
+
+
+# Dictionary.Values.ToList / Dictionary.Keys.ToList
+
+Assign $ListVariable$ = dictinary.Values.ToList
+
+Assign $ListVariable$ = dictinary.Keys.ToList
+
+
+
+# DataTable.Select().Skip.Take()
+
+# oldDataTable의 Status Column의 값이 가장 첫번째로 Open인 Row부터 선택
+
+Assign $NewDataTableVariable$ = $OldDataTableVariable$.Select().Skip().Take($OldDataTableVariable$.Rows.IndexOf($OldDataTableVariable$.Select("[Status]='Open'")(0))).CopyToDataTable
+
+
+
+# DataTable GroupBy, DefaultView
+
+ienumDTGroupby = New System.Collections.Generic.Ienumerable<System.Linq.IGrouping<System.Object, System.Data.DataRow>>
+
+ienumDTGroupby = DataTable.AsEnumerable().GroupBy(Function(x As DataRow) x.Item("Column Name"))
+
+dtDefaultView = dataTable.DefaultView.ToTable(True,"Column Name1","Column Name2","Column Name3").Copy
+
+
+
+# DataTable.Select()
+
+$DataTableVariable$.Select(String.Format("Model like '{0}{1}%' or Model like '{2}{3}%' or Model like '{4}{5}%' or Model like '{6}{7}%' or Model like '{8}{9}%'",))
+
+
+
+# Datatable Column 이름 변경
+
+# https://docs.microsoft.com/ko-kr/dotnet/api/system.data.datacolumn.expression?view=net-5.0
+
+
+$DataTableVariable$.Columns(0).ColumnName = "newColumnName"
+
+$DataTableVariable$.Columns("oldColumnName").ColumnName = "newColumnName"
+
+
+
+# DataTable Column 위치변경
+
+# https://learn.microsoft.com/ko-kr/dotnet/api/system.data.datacolumn.setordinal?view=net-7.0
+
+DataColumn.SetOrdinal(Int32)
+
+
+
+# 정수 부분 반환(0에 가장 가까운 정수로 반올림 합니다.)
+
+# https://docs.microsoft.com/ko-kr/dotnet/api/system.math.truncate?view=net-5.0
+
+iQuotient = Convert.ToInt32(System.Math.Truncate((GetFileList.Count / i_iSplitNumber)))
+
+
+
+# 두 숫자를 나누고 나머지만 반환
+
+# https://docs.microsoft.com/ko-kr/dotnet/visual-basic/language-reference/operators/mod-operator
+
+iRemainder = Convert.ToInt32(GetFileList.Count Mod i_iSplitNumber)
+
+
+
+# DateTime 변환
+
+# https://docs.microsoft.com/ko-kr/dotnet/api/system.datetime.parseexact?view=net-5.0
+
+*DateTime.ParseExact(String, String, IFormatProvider)
+
+dateTime = Date.ParseExact("20210525", "yyyyMMdd", System.Globalization.CultureInfo.CurrentCulture)
+
+
+
+# https://docs.microsoft.com/ko-kr/dotnet/api/system.convert.todatetime?view=net-5.0
+
+*Convert.ToDateTime(String)
+
+Convert.ToDateTime("2021-05-25")
+
+
+
+# 문자열을 UTF - 8로 변형하기
+
+$listVariable.ToDictionary(Function(p) p.Trim, Function(p) System.Web.HttpUtility.UrlEncode(p.Trim).ToUpper)
+
+System.Net.WebUtility.UrlEncode($StringVariable)
+
+
+
+# 문자열이 숫자인지, 문자인지 확인
+
+IsNumeric($StringORIntegerVariable$) 
+
+return True or False
+
+
+
+# 문자를 16진수로 변경(https://learn.microsoft.com/ko-kr/dotnet/standard/base-types/standard-numeric-format-strings#hexadecimal-format-specifier-x)
+
+Integer.Parse($StringVariable$).ToString("X2") #16진수 2자리로표기 0A
+
+Integer.Parse($StringVariable$).ToString("X3") #16진수 3자리로표기 00B
+
+
+
+# SecureString을 String으로 변환 / String을 SecureString으로 변환
+
+Assign $StringVariable$ = New System.Net.NetworkCredential(String.Empty, $SecureStringVariable$).Password
+
+Assign $SecureStringVariable$ = New System.Net.NetworkCredential(String.Empty, $StringVariable$).SecurePassword
